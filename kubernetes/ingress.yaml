@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wisecow-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # No cert-manager needed for self-signed certificate
+spec:
+  tls:
+    - hosts:
+        - a9fbd3c128fd5421b8b3f60254bc5d11-1408750103.us-east-1.elb.amazonaws.com
+      secretName: wisecow-tls
+  rules:
+    - host: a9fbd3c128fd5421b8b3f60254bc5d11-1408750103.us-east-1.elb.amazonaws.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wisecow-service   # Replace with your actual service name
+                port:
+                  number: 80
